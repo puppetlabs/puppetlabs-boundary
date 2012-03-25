@@ -25,7 +25,7 @@ class bprobe::delete {
   $username       = $bprobe::params::username
   $apikey         = $bprobe::params::apikey
 
-  boundary_meter { $fqdn:
+  boundary_meter { $::fqdn:
     ensure   => absent,
     username => $username,
     apikey   => $apikey,
