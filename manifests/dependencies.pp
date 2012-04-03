@@ -54,7 +54,7 @@ class bprobe::dependencies {
       }
 
       exec { 'add-boundary-apt-key':
-        command     => 'apt-key add /etc/apt/trusted.gpg.d/boundary.gpg',
+        command     => '/usr/bin/apt-key add /etc/apt/trusted.gpg.d/boundary.gpg',
         refreshonly => true
       }
 
