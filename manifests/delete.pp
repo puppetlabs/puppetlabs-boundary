@@ -22,12 +22,12 @@ class boundary::delete {
 
   require boundary::params
 
-  $username       = $boundary::params::username
-  $apikey         = $boundary::params::apikey
+  $id             = $bprobe::params::id
+  $apikey         = $bprobe::params::apikey
 
   boundary_meter { $fqdn:
     ensure   => absent,
-    username => $username,
+    id       => $id,
     apikey   => $apikey,
   }
 
