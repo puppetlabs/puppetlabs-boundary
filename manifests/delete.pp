@@ -25,7 +25,7 @@ class boundary::delete {
   $id             = $bprobe::params::id
   $apikey         = $bprobe::params::apikey
 
-  boundary_meter { $fqdn:
+  boundary_meter { $::fqdn:
     ensure   => absent,
     id       => $id,
     apikey   => $apikey,
