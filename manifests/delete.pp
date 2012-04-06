@@ -1,6 +1,6 @@
 #
 # Author:: James Turnbull <james@lovedthanlost.net>
-# Module Name:: bprobe
+# Module Name:: boundary
 # Class:: bprobe::delete
 #
 # Copyright 2011, Puppet Labs
@@ -18,12 +18,12 @@
 # limitations under the License.
 #
 
-class bprobe::delete {
+class boundary::delete {
 
-  require bprobe::params
+  require boundary::params
 
-  $username       = $bprobe::params::username
-  $apikey         = $bprobe::params::apikey
+  $username       = $boundary::params::username
+  $apikey         = $boundary::params::apikey
 
   boundary_meter { $fqdn:
     ensure   => absent,
