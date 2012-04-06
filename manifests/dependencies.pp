@@ -27,20 +27,22 @@ class boundary::dependencies {
   case $::operatingsystem {
     'redhat', 'centos': {
 
-      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-Boundary':
+      $rpmkey = '/etc/pki/rpm-gpg/RPM-GPG-KEY-Boundary'
+
+      file { $rpmkey:
         ensure => present,
         source => 'puppet:///modules/boundary/RPM-GPG-KEY-Boundary',
       }
 
       exec { 'import_key':
-        command     => '/bin/rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Boundary',
-        subscribe   => File['/etc/pki/rpm-gpg/RPM-GPG-KEY-Boundary'],
+        command     => "/bin/rpm --import $rpmkey",
+        subscribe   => File[$rpmkey],
         refreshonly => true,
       }
 
       yumrepo { 'boundary':
         enabled  => 1,
-        baseurl  => 'https://yum.boundary.com/centos/os/5.5/x86_64/',
+        baseurl  => "https://yum.boundary.com/centos/os/5.5/$::architecture/",
         gpgcheck => 1,
         gpgkey   => 'https://yum.boundary.com/RPM-GPG-KEY-Boundary',
       }
@@ -68,8 +70,9 @@ class boundary::dependencies {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => [Package['apt-transport-https'], File['/etc/apt/trusted.gpg.d/boundary.gpg']],
-        notify  => Exec['apt-update'],
+        require => [Package['apt-transport-https'],
+                    File['/etc/apt/trusted.gpg.d/boundary.gpg']],
+        notify  => Exec['apt-update']
       }
 
       exec { 'apt-update':
