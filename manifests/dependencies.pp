@@ -54,31 +54,21 @@ class boundary::dependencies {
         ensure => latest,
       }
 
-      file { '/etc/apt/trusted.gpg.d/boundary.gpg':
-        source => 'puppet:///modules/boundary/boundary.gpg',
-        notify => Exec['add-boundary-apt-key'],
+      $downcase_os = downcase($::operatingsystem)
+
+      $repos = $::operatingsystem ? {
+        'Debian' => 'main',
+        'Ubuntu' => 'universe',
       }
 
-      exec { 'add-boundary-apt-key':
-        command     => 'apt-key add /etc/apt/trusted.gpg.d/boundary.gpg',
-        refreshonly => true,
+      apt::source { "boundary":
+        location   => "https://apt.boundary.com/${boundary::dependencies::downcase_os}",
+        repos      => $boundary::dependencies::repos,
+        key        => '6532CC20',
+        key_server => 'pgp.mit.edu',
+        require    => Package['apt-transport-https'],
       }
 
-      file { '/etc/apt/sources.list.d/boundary.list':
-        ensure  => present,
-        content => template('boundary/apt_source.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => [Package['apt-transport-https'],
-                    File['/etc/apt/trusted.gpg.d/boundary.gpg']],
-        notify  => Exec['apt-update']
-      }
-
-      exec { 'apt-update':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-      }
     }
 
     default: {

@@ -6,3 +6,5 @@ license 'Apache 2.0'
 summary 'Boundary meter module'
 description 'A module to install Boundary metrics meters.'
 project_page 'https://github.com/puppetlabs/puppetlabs-boundary'
+
+dependency 'puppetlabs/apt', '0.0.4'
