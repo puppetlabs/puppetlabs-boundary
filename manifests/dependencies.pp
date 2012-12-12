@@ -44,7 +44,7 @@ class boundary::dependencies {
         descr    => "Boundary $::operatingsystemrelease $::architecture Repository ",
         enabled  => 1,
         baseurl  => $::operatingsystem ? {
-          /(redhat|centos)/ =>  "https://yum.boundary.com/centos/os/$::operatingsystemrelease/$::architecture/",
+          /(?i:|redhat|centos)/ =>  "https://yum.boundary.com/centos/os/$::operatingsystemrelease/$::architecture/",
           'Amazon'          =>  "https://yum.boundary.com/centos/os/6.3/$::architecture/",
         },
         gpgcheck => 1,
